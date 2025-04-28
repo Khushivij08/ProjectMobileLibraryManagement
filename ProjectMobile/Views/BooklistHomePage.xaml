@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectMobile.Views.BooklistHomePage"
+             xmlns:viewmodel="clr-namespace:ProjectMobile.ViewModels"
+             xmlns:models="clr-namespace:ProjectMobile.Models"
+             xmlns:controls="clr-namespace:ProjectMobile.CustomControls"
+             x:DataType="viewmodel:BooklistHomePageViewmodel"
+             Title="{Binding Title}">
+
+    <!-- Top Toolbar -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Command="{Binding LoadBookFromDatabaseCommand}" />
+        <ToolbarItem Text="+ Add Book" Command="{Binding NavigateToAddBookPageCommand}" />
+    </ContentPage.ToolbarItems>
+    <ScrollView>
+    <!-- Main Layout -->
+    <StackLayout Padding="10" Spacing="10">
+
+        <SearchBar 
+    Placeholder="Search Books"
+    Text="{Binding SearchTerm}" 
+    HorizontalOptions="FillAndExpand" />
+        <!-- Filter by Genre Picker -->
+        <Picker 
+            Title="Filter by Genre"
+            SelectedItem="{Binding SelectedGenre}" 
+            ItemsSource="{Binding Genres}" 
+            SelectedIndexChanged="OnGenreChanged"/>
+
+        <!-- Loading Spinner -->
+        <ActivityIndicator 
+            IsRunning="{Binding LoadBookFromDatabaseCommand.IsRunning}" 
+            IsVisible="{Binding LoadBookFromDatabaseCommand.IsRunning}" 
+            Color="Red" 
+            HorizontalOptions="Center" 
+            VerticalOptions="Center" />
+
+        <!-- Grid for Book List -->
+        <Grid IsVisible="{Binding GridVisibility}">
+            <CollectionView ItemsSource="{Binding FilteredBooks}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Book">
+                        <Frame Margin="5,5,5,0" Padding="10" CornerRadius="10" BackgroundColor="#F5F5F5" HasShadow="True">
+
+                            <!-- Gesture Recognizers -->
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:BooklistHomePageViewmodel}}, Path=NavigateToDetailsCommand}" 
+                                    CommandParameter="{Binding .}" />
+                                <SwipeGestureRecognizer 
+                                    Direction="Left" 
+                                    Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:BooklistHomePageViewmodel}}, Path=DeleteBookDataCommand}" 
+                                    CommandParameter="{Binding .}" />
+                                <SwipeGestureRecognizer 
+                                    Direction="Right" 
+                                    Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:BooklistHomePageViewmodel}}, Path=UpdateBookDataCommand}" 
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+
+                            <!-- Book Info Layout -->
+                            <HorizontalStackLayout Spacing="15">
+                                <!-- Base64 Image -->
+                                <controls:CustomImageControl 
+                                    Base64Source="{Binding Image}" 
+                                    WidthRequest="60" 
+                                    HeightRequest="90" 
+                                    VerticalOptions="Center" />
+
+                                <!-- Title and Description -->
+                                <VerticalStackLayout VerticalOptions="CenterAndExpand">
+                                    <Label Text="{Binding Title}" FontSize="16" FontAttributes="Bold" />
+                                    <Label Text="{Binding Description}" FontSize="14" TextColor="Gray" />
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </StackLayout>
+    </ScrollView>
+</ContentPage>

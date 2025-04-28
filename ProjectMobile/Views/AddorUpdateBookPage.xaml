@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:ProjectMobile.ViewModels"
+             xmlns:models="clr-namespace:ProjectMobile.Models"
+             x:Class="ProjectMobile.Views.AddOrUpdateBookPage"
+             x:DataType="viewmodel:AddOrUpdateBookPageViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Home" Command="{Binding NavigateToHomeCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+
+            <!-- Display Validation Errors -->
+            <CollectionView IsVisible="{Binding ShowErrors}" ItemsSource="{Binding Errors}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Error">
+                        <VerticalStackLayout>
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding Property}" FontAttributes="Bold" TextColor="IndianRed" />
+                                <Label Text="{Binding Value}" TextColor="IndianRed" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Book Title -->
+            <Label Text="Book Title" FontAttributes="Bold" />
+            <Entry Placeholder="Enter book title" Text="{Binding AddBookModel.Title}" />
+
+            <!-- Book Description -->
+            <Label Text="Description" FontAttributes="Bold" />
+            <Entry Placeholder="Enter book description" Text="{Binding AddBookModel.Description}" />
+
+            <!-- Genre Description -->
+            <Label Text="Genre" FontAttributes="Bold" />
+            <Entry Placeholder="Enter Genre Here" Text="{Binding AddBookModel.Genre}" />
+
+
+            <!-- Book Genre --><!--
+            <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Genre:" FontAttributes="Bold" FontSize="16" />
+                    <Label Text="{Binding AddBookModel.Genre}" FontSize="14" />
+                </VerticalStackLayout>
+            </Frame>-->
+
+            <!-- Browse Image & Show Image -->
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Browse Image" Command="{Binding SelectImageCommand}" HeightRequest="50" />
+                <Image Source="{Binding ImageSourceFile}" WidthRequest="100" HeightRequest="150" />
+            </HorizontalStackLayout>
+
+            <!-- Save Button -->
+            <Button Text="Save Data" Command="{Binding SaveDataCommand}" />
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

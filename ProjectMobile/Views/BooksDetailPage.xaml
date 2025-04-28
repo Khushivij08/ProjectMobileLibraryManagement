@@ -1,0 +1,76 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:ProjectMobile.ViewModels"
+             xmlns:controls="clr-namespace:ProjectMobile.CustomControls"
+             x:Class="ProjectMobile.Views.BookDetailsPage"
+            x:DataType="viewmodel:BookDetailsPageViewmodel"
+             Title="{Binding Title}">
+
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            
+            
+            <!-- Image Display -->
+            <controls:CustomImageControl 
+                Base64Source="{Binding BookModel.Image}" 
+                WidthRequest="150" 
+                HeightRequest="200"
+                HorizontalOptions="Center" >
+            
+            </controls:CustomImageControl>
+        
+            <!-- Book ID -->
+            <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Book SN:" FontAttributes="Bold" FontSize="16" />
+                    <Label Text="{Binding BookModel.Id}" FontSize="14" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Book Title -->
+            <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Book Title:" FontAttributes="Bold" FontSize="16" />
+                    <Label Text="{Binding BookModel.Title}" FontSize="14" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Book Description -->
+            <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Book Description:" FontAttributes="Bold" FontSize="16" />
+                    <Label Text="{Binding BookModel.Description}" FontSize="14" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Book Genre -->
+            <Frame BorderColor="Gray" CornerRadius="10" Padding="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Genre:" FontAttributes="Bold" FontSize="16" />
+                    <Label Text="{Binding BookModel.Genre}" FontSize="14" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Favorite button -->
+            <Button 
+            Text="{Binding BookModel.IsFavorite, Converter={StaticResource FavoriteTextConverter}}"
+            Command="{Binding ToggleFavoriteCommand}" />
+           <!--DELETE BUTTON-->
+            <Button Text="Delete Book"
+    TextColor="White"
+    BackgroundColor="Black"
+    Command="{Binding DeleteBookCommand}"
+    CornerRadius="10"
+    Padding="10"
+    FontAttributes="Bold" />
+
+            
+            <!--Share button-->
+            <Button Text="Share Book!!" Command="{Binding ShareBookCommand}" />
+
+          
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
